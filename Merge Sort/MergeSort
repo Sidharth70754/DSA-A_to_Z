@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+
+std::vector<double> mergeSort(std::vector<double>& arr);
+std::vector<double> merge(const std::vector<double>& left, const std::vector<double>& right);
+
+int main() {
+    std::vector<double> unsortedArr = {3, 7, 6, -10, 15, 23.5, 55, -13};
+    std::vector<double> sortedArr = mergeSort(unsortedArr);
+
+    std::cout << "Sorted array: ";
+    for (double num : sortedArr) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+std::vector<double> mergeSort(std::vector<double>& arr) {
+    if (arr.size() <= 1) {
+        return arr;
+    }
+
+    size_t mid = arr.size() / 2;
+    std::vector<double> leftHalf(arr.begin(), arr.begin() + mid);
+    std::vector<double> rightHalf(arr.begin() + mid, arr.end());
+
+    std::vector<double> sortedLeft = mergeSort(leftHalf);
+    std::vector<double> sortedRight = mergeSort(rightHalf);
+
+    return merge(sortedLeft, sortedRight);
+}
+
+std::vector<double> merge(const std::vector<double>& left, const std::vector<double>& right) {
+    std::vector<double> result;
+    size_t i = 0, j = 0;
+
+    while (i < left.size() && j < right.size()) {
+        if (left[i] < right[j]) {
+            result.push_back(left[i]);
+            i++;
+        } else {
+            result.push_back(right[j]);
+            j++;
+        }
+    }
+
+    while (i < left.size()) {
+        result.push_back(left[i]);
+        i++;
+    }
+
+    while (j < right.size()) {
+        result.push_back(right[j]);
+        j++;
+    }
+
+    return result;
+}
